@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'note.dart';
+import '../models/note.dart'; // Ajusta la ruta según la estructura de tu proyecto
 
 class NoteFormScreen extends StatefulWidget {
   final String userName;
@@ -9,6 +9,8 @@ class NoteFormScreen extends StatefulWidget {
   @override
   _NoteFormScreenState createState() => _NoteFormScreenState();
 }
+
+// Resto del código de tu clase NoteFormScreen
 
 class _NoteFormScreenState extends State<NoteFormScreen> {
   final _formKey = GlobalKey<FormState>();
@@ -128,6 +130,25 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Menú',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: '',
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.pinkAccent,
+        onTap: (index) {},
       ),
     );
   }

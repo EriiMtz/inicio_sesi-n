@@ -1,87 +1,67 @@
 import 'package:flutter/material.dart';
 
-import 'note_form_screen.dart';
+class DiaryScreen extends StatelessWidget {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
 
-class Note {
-  final String date;
-  final String title;
-  final String description;
+  void _saveEntry() {
+    final title = titleController.text;
+    final content = contentController.text;
 
-  Note({
-    required this.date,
-    required this.title,
-    required this.description,
-  });
-}
-
-class NoteListScreen extends StatelessWidget {
-  final List<Note> notes;
-
-  NoteListScreen({required this.notes});
+    if (title.isNotEmpty && content.isNotEmpty) {
+      // Aquí puedes agregar la lógica para guardar la entrada del diario.
+      print('Título: $title');
+      print('Contenido: $content');
+    } else {
+      print('Por favor, ingrese un título y contenido');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pinkAccent,
-        title: Text('Mis diarios'),
-        elevation: 0,
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
+            colors: [Colors.white, Colors.pink.shade100],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blueAccent, Colors.pinkAccent],
           ),
         ),
-        child: ListView.builder(
-          itemCount: notes.length,
-          itemBuilder: (context, index) {
-            final note = notes[index];
-            return Card(
-              margin: EdgeInsets.all(10),
-              child: ListTile(
-                title: Text(note.title),
-                subtitle: Text(note.date),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(note.title),
-                      content: Text(note.description),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('Cerrar'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Mi diario personal!',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-            );
-          },
+              SizedBox(height: 16),
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Título',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                controller: contentController,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  labelText: 'Contenido',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _saveEntry,
+                child: Text('Guardar'),
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Menú',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: '',
-          ),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Colors.pinkAccent,
-        onTap: (index) {},
       ),
     );
   }

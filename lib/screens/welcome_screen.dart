@@ -1,18 +1,24 @@
+// screens/welcome_screen.dart
+
 import 'package:flutter/material.dart';
 import 'note_form_screen.dart';
-import 'note.dart';
+import '../models/note.dart';
+import '../models/user.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  final String userName;
-
-  WelcomeScreen({required this.userName});
-
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  User? user;
   var notes = <Note>[];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user = ModalRoute.of(context)?.settings.arguments as User?;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +41,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'WELCOME!',
+                '¡Bienvenid@, ${user?.fullName ?? 'Usuario'}!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                widget.userName,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
               ),
@@ -93,8 +90,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            NoteFormScreen(userName: widget.userName)),
+                        builder: (context) => NoteFormScreen(
+                            userName: user?.fullName ?? 'Usuario')),
                   );
                   if (result != null && result is Note) {
                     setState(() {

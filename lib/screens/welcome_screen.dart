@@ -80,6 +80,40 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                         title: Text(note.title),
                         subtitle: Text(note.description),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              color: Colors.blueAccent,
+                              onPressed: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NoteFormScreen(
+                                      userName: user?.fullName ?? 'Usuario',
+                                      note: note,
+                                    ),
+                                  ),
+                                );
+                                if (result != null && result is Note) {
+                                  setState(() {
+                                    notes[index] = result;
+                                  });
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              color: Colors.redAccent,
+                              onPressed: () {
+                                setState(() {
+                                  notes.removeAt(index);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -90,8 +124,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NoteFormScreen(
-                            userName: user?.fullName ?? 'Usuario')),
+                      builder: (context) => NoteFormScreen(
+                        userName: user?.fullName ?? 'Usuario',
+                      ),
+                    ),
                   );
                   if (result != null && result is Note) {
                     setState(() {

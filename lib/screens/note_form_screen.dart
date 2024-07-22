@@ -3,20 +3,37 @@ import '../models/note.dart'; // Ajusta la ruta según la estructura de tu proye
 
 class NoteFormScreen extends StatefulWidget {
   final String userName;
+  final Note? note;
 
-  NoteFormScreen({required this.userName});
+  NoteFormScreen({required this.userName, this.note});
 
   @override
   _NoteFormScreenState createState() => _NoteFormScreenState();
 }
-
-// Resto del código de tu clase NoteFormScreen
 
 class _NoteFormScreenState extends State<NoteFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.note != null) {
+      _dateController.text = widget.note!.date;
+      _titleController.text = widget.note!.title;
+      _descriptionController.text = widget.note!.description;
+    }
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +79,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a date';
+                      return 'Por favor ingrese una fecha';
                     }
                     return null;
                   },
@@ -81,7 +98,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a title';
+                      return 'Por favor ingrese un título';
                     }
                     return null;
                   },
@@ -101,7 +118,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
                   maxLines: 5,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a description';
+                      return 'Por favor ingrese una descripción';
                     }
                     return null;
                   },
